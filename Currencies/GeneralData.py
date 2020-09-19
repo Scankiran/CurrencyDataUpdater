@@ -1,8 +1,6 @@
 import requests
-import json
 from  Models.CurrencyBase import CurrencyBase
 from Models.CurrencyDetail import CurrencyDetailModel
-from Models.BankModel import BankModel
 
 from bs4 import BeautifulSoup
 import json
