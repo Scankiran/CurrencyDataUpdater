@@ -10,6 +10,7 @@ from firebase_admin import firestore
 from Currencies import Euro,Gbp,Usd,GeneralData
 import time
 import datetime
+import json
 
 def print_hi(name):
     # Use a breakpoint in the code line below to debug your script.
@@ -51,15 +52,26 @@ def writeDataToFirebase(dataType,type,data):
     })
     print(current_time)
 
+def writeDataToFirebasee(dataType,type,data):
+    current_time = datetime.datetime.now()
+
+
+    doc_ref = db.collection(dataType).document(type)
+    doc_ref.set({
+        'changeRate': json.dumps(data[0],ensure_ascii=False),
+        'banks':json.dumps(data[1],ensure_ascii=False),
+        'updateTime':current_time
+    })
+    print(current_time)
 
 if __name__ == '__main__':
     print_hi('PyCharm')
     count = 0
 
     for i in range(0,10):
-        writeDataToFirebase('euro','last', Euro.run())
-        writeDataToFirebase('usd','last', Usd.run())
-        writeDataToFirebase('gbp','last', Gbp.run())
+        writeDataToFirebasee('euro','last', Euro.run())
+        writeDataToFirebasee('usd','last', Usd.run())
+        writeDataToFirebasee('gbp','last', Gbp.run())
         writeDataToFirebase('general','summary',GeneralData.run(False))
         writeDataToFirebase('general','all', GeneralData.run(True))
         print("runoldu")

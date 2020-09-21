@@ -70,7 +70,7 @@ def run():
         ls['sell'] = ob.sell
         bankValues.append(ls)
 
-    return json.dumps([changeRates,bankValues],ensure_ascii=False)
+    return [changeRates,bankValues]
 
 
 
