@@ -18,7 +18,7 @@ def returnBank():
 
     changeTable = tables[0]
     cells = (changeTable.find('tbody')).find_all('td')
-    title = ["","Günlük Değşim","Haftalık Değişim","Yıllık Değişim"]
+    title = ["","Günlük Değişim","Haftalık Değişim","Yıllık Değişim"]
     for i in range(1,4):
         ob = CurrencyBase(title[i], cells[i].get_text(),cells[i].get_attribute_list('class')[0].split('-')[1])
         changeRates.append(ob)
@@ -47,12 +47,17 @@ def returnBank():
         ob = BankModel((cells[0].find('a')).get_text(), cells[1].get_text(), cells[2].get_text())
         bankValues.append(ob)
 
+    currencyName = bs.find('div', {'class': 'kur-title'}).find('span', {'class': 'left'}).get_text()
+    currencyValues = bs.find('div', {'class': 'data'}).find_all('span', {'class': 'value'})
 
-    return changeRates,bankValues
+    currencyBuy = currencyValues[0].get_text()
+    currencySell = currencyValues[0].get_text()
+
+    return changeRates,bankValues,{'name':currencyName,'sell':currencySell,'buy':currencyBuy}
 
 
 def run():
-    changeList, bankList = returnBank()
+    changeList, bankList, generalInfo = returnBank()
     changeRates = list()
     bankValues = list()
 
@@ -70,7 +75,7 @@ def run():
         ls['sell'] = ob.sell
         bankValues.append(ls)
 
-    return [changeRates,bankValues]
+    return [changeRates,bankValues,generalInfo]
 
 
 

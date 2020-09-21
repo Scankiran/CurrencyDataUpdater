@@ -9,30 +9,10 @@ from firebase_admin import credentials
 from firebase_admin import firestore
 from Currencies import Euro,Gbp,Usd,GeneralData
 import time
+import schedule
 import datetime
 import json
 
-def print_hi(name):
-    # Use a breakpoint in the code line below to debug your script.
-    print(f'Hi, {name}')  # Press ⌘F8 to toggle the breakpoint.
-
-# def addDataSample():
-#
-#     # Use a service account
-#     cred = credentials.Certificate('/Users/saidcankiran/Documents/currencyapi-56147-firebase-adminsdk-737nm-fb12f06859.json')
-#     firebase_admin.initialize_app(cred)
-#
-#     db = firestore.client()
-#
-#     doc_ref = db.collection('users').document('alovelace')
-#     doc_ref.set({
-#         'fi2rst': 'Ad2a',
-#         'l22ast': 'Love2lace',
-#         'b2orn': 1815
-#     })
-
-
-# Press the green button in the gutter to run the script.
 
 
 credp = credentials.Certificate(
@@ -60,14 +40,15 @@ def writeDataToFirebasee(dataType,type,data):
     doc_ref.set({
         'changeRate': json.dumps(data[0],ensure_ascii=False),
         'banks':json.dumps(data[1],ensure_ascii=False),
+        'generalInfo':data[2],
         'updateTime':current_time
     })
     print(current_time)
 
-if __name__ == '__main__':
-    print_hi('PyCharm')
-    count = 0
 
+
+
+def run():
     for i in range(0,10):
         writeDataToFirebasee('euro','last', Euro.run())
         writeDataToFirebasee('usd','last', Usd.run())
@@ -75,11 +56,13 @@ if __name__ == '__main__':
         writeDataToFirebase('general','summary',GeneralData.run(False))
         writeDataToFirebase('general','all', GeneralData.run(True))
         print("runoldu")
-        time.sleep(10)
+        time.sleep(60)
 
 
 
+      # Press ⌘F8 to toggle the breakpoint.
 
-
-
+while True:
+    run()
+    time.sleep(1)
 
