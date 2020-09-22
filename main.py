@@ -9,7 +9,7 @@ from firebase_admin import credentials
 from firebase_admin import firestore
 from Currencies import Euro,Gbp,Usd,GeneralData
 import time
-import schedule
+import sched
 import datetime
 import json
 
@@ -48,21 +48,22 @@ def writeDataToFirebasee(dataType,type,data):
 
 
 
-def run():
-    for i in range(0,10):
-        writeDataToFirebasee('euro','last', Euro.run())
-        writeDataToFirebasee('usd','last', Usd.run())
-        writeDataToFirebasee('gbp','last', Gbp.run())
-        writeDataToFirebase('general','summary',GeneralData.run(False))
-        writeDataToFirebase('general','all', GeneralData.run(True))
-        print("runoldu")
-        time.sleep(60)
 
 
 
+s = sched.scheduler(time.time,time.sleep)
+
+def run(sc):
+    writeDataToFirebasee('euro','last', Euro.run())
+    writeDataToFirebasee('usd','last', Usd.run())
+    writeDataToFirebasee('gbp','last', Gbp.run())
+    writeDataToFirebase('general','summary',GeneralData.run(False))
+    writeDataToFirebase('general','all', GeneralData.run(True))
+    print("runoldu")
+    s.enter(60,1,run,(sc,))
+    s.run()
+
+run(s)
       # Press ⌘F8 to toggle the breakpoint.
 
-while True:
-    run()
-    time.sleep(1)
 
