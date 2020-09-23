@@ -3,11 +3,11 @@
 # Press ⌃R to execute it or replace it with your code.
 # Press Double ⇧ to search everywhere for classes, files, tool windows, actions, and settings.
 
-
+import sys,os
 import firebase_admin
 from firebase_admin import credentials
 from firebase_admin import firestore
-from Currencies import Euro,Gbp,Usd,GeneralData
+from Currencies import Euro,Gbp,Usd,GeneralData,Gold
 import time
 import sched
 import datetime
@@ -49,21 +49,27 @@ def writeDataToFirebasee(dataType,type,data):
 
 
 
-
-
+print(sys.getrecursionlimit())
+sys.setrecursionlimit(10000)
+print(sys.getrecursionlimit())
 s = sched.scheduler(time.time,time.sleep)
 
 def run(sc):
     writeDataToFirebasee('euro','last', Euro.run())
     writeDataToFirebasee('usd','last', Usd.run())
     writeDataToFirebasee('gbp','last', Gbp.run())
+    writeDataToFirebasee('gold','last',Gold.run())
     writeDataToFirebase('general','summary',GeneralData.run(False))
     writeDataToFirebase('general','all', GeneralData.run(True))
+
     print("runoldu")
     s.enter(60,1,run,(sc,))
     s.run()
 
-run(s)
+try:
+    run(s)
+except:
+    os.system("python3 main.py")
       # Press ⌘F8 to toggle the breakpoint.
 
 
