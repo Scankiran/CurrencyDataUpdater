@@ -29,7 +29,7 @@ def returnBank():
         if len(cells) < 1 :
             continue
 
-        ob = BankModel((cells[0].find('a')).get_text(),cells[1].get_text(),cells[2].get_text())
+        ob = BankModel((cells[0].find('a')).get_text(),cells[1].get_text().replace(",","."),cells[2].get_text().replace(",","."))
         bankValues.append(ob)
 
     bankTable = tables[2]
@@ -41,7 +41,7 @@ def returnBank():
         if len(cells) < 1:
             continue
 
-        ob = BankModel((cells[0].find('a')).get_text(), cells[1].get_text(), cells[2].get_text())
+        ob = BankModel((cells[0].find('a')).get_text(), cells[1].get_text().replace(",","."), cells[2].get_text().replace(",","."))
         bankValues.append(ob)
 
     currencyName = bs.find('div',{'class':'kur-title'}).find('span',{'class':'left'}).get_text()

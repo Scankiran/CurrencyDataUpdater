@@ -16,7 +16,7 @@ def summary_general_currency_data_scrapy():
     for cell in cells:
         up = cell.find_all('span')
         name = up[0].get_text()
-        value = up[1].get_text()
+        value = up[1].get_text().replace(",",".")
 
         down = cell.find('div')
         type = down.get_attribute_list('class')
